@@ -26,3 +26,40 @@
 .notFound h2 {
     margin-top: 0;
 }
+
+.contents {
+    margin-top: 24px;
+}
+
+.contentsHeading {
+    margin: 0;
+    font-size: 16px;
+}
+
+.children {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.child {
+    margin-bottom: 6px;
+}
+
+.childLink {
+    border-radius: 4px;
+}
+
+.childLink:focus-visible {
+    outline: 2px solid #6cb6ff;
+}
+
+.childSize {
+    margin-left: 12px;
+    color: #999;
+}
+
+.empty {
+    margin: 8px 0 0;
+    color: #999;
+}
