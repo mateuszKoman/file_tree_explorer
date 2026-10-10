@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom'
 import Breadcrumbs from '../components/Breadcrumbs.tsx'
 import {formatSize} from '../domain/formatSize.ts'
-import {nodeUrl} from '../domain/paths.ts'
+import {useNodeHref} from '../state/useNodeHref.ts'
 import {useSelectedPath} from '../state/useSelectedPath.ts'
 import {useTreeContext} from '../state/useTreeContext.ts'
 import styles from './NodeDetails.module.css'
@@ -9,6 +9,7 @@ import styles from './NodeDetails.module.css'
 function NodeDetails() {
     const {index} = useTreeContext()
     const path = useSelectedPath()
+    const href = useNodeHref()
     const info = path === null ? undefined : index?.byPath.get(path)
 
     if (index === null || info === undefined) {
@@ -16,7 +17,7 @@ function NodeDetails() {
             <div className={styles.notFound}>
                 <h2>Node not found</h2>
                 <p>No node in the loaded tree matches this address.</p>
-                <Link to="/tree">Go to the root folder</Link>
+                <Link to={href('')}>Go to the root folder</Link>
             </div>
         )
     }
@@ -61,7 +62,7 @@ function NodeDetails() {
                                 const isFolder = child.node.type === 'folder'
                                 return (
                                     <li key={childPath} className={styles.child}>
-                                        <Link className={styles.childLink} to={nodeUrl(childPath)}>
+                                        <Link className={styles.childLink} to={href(childPath)}>
                                             <span aria-hidden="true">{isFolder ? '📁' : '📄'}</span>
                                             {' '}
                                             {child.node.name}
