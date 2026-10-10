@@ -1,26 +1,30 @@
 import {memo} from 'react'
+import {Link} from 'react-router-dom'
+import {nodeUrl} from '../domain/paths.ts'
 import type {NodeInfo} from '../domain/types.ts'
 import styles from './TreeNodeRow.module.css'
 
 type TreeNodeRowProps = {
     info: NodeInfo
     expanded: boolean
+    selected: boolean
     onToggle: (path: string) => void
 }
 
 const INDENT_PX = 16
 
-function TreeNodeRow({info, expanded, onToggle}: TreeNodeRowProps) {
+function TreeNodeRow({info, expanded, selected, onToggle}: TreeNodeRowProps) {
     const isFolder = info.node.type === 'folder'
     const canExpand = isFolder && info.childCount > 0
 
     return (
         <li
-            className={styles.row}
+            className={selected ? `${styles.row} ${styles.selected}` : styles.row}
             role="treeitem"
             aria-label={info.node.name}
             aria-level={info.depth + 1}
             aria-expanded={canExpand ? expanded : undefined}
+            aria-selected={selected}
             style={{paddingLeft: info.depth * INDENT_PX}}
         >
             {canExpand ? (
@@ -39,7 +43,13 @@ function TreeNodeRow({info, expanded, onToggle}: TreeNodeRowProps) {
             <span className={styles.icon} aria-hidden="true">
         {isFolder ? '📁' : '📄'}
       </span>
-            <span className={styles.name}>{info.node.name}</span>
+            <Link
+                to={nodeUrl(info.path)}
+                className={styles.name}
+                aria-current={selected ? 'page' : undefined}
+            >
+                {info.node.name}
+            </Link>
         </li>
     )
 }

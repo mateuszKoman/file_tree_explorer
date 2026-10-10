@@ -138,6 +138,50 @@ describe('buildIndex', () => {
         ])
     })
 
+    it('sums the sizes of all files in each folder subtree, with zero for empty folders', () => {
+        const tree: FolderNode = {
+            name: 'root',
+            type: 'folder',
+            children: [
+                {
+                    name: 'src',
+                    type: 'folder',
+                    children: [
+                        {name: 'index.ts', type: 'file', size: 1024},
+                        {
+                            name: 'components',
+                            type: 'folder',
+                            children: [
+                                {name: 'Button.tsx', type: 'file', size: 512},
+                                {name: 'empty', type: 'folder', children: []},
+                            ],
+                        },
+                    ],
+                },
+                {name: 'empty', type: 'folder', children: []},
+                {name: 'package.json', type: 'file', size: 300},
+            ],
+        }
+
+        const index = buildIndex(tree)
+
+        expect(index.root.subtreeSize).toBe(1836)
+        expect(index.byPath.get('src')?.subtreeSize).toBe(1536)
+        expect(index.byPath.get('src/components')?.subtreeSize).toBe(512)
+        expect(index.byPath.get('src/components/empty')?.subtreeSize).toBe(0)
+        expect(index.byPath.get('empty')?.subtreeSize).toBe(0)
+    })
+
+    it('gives a file its own size as the subtree size', () => {
+        const tree: FolderNode = {
+            name: 'root',
+            type: 'folder',
+            children: [{name: 'package.json', type: 'file', size: 300}],
+        }
+
+        expect(buildIndex(tree).byPath.get('package.json')?.subtreeSize).toBe(300)
+    })
+
     it('indexes a 50k-level deep tree without overflowing the stack', () => {
         let tree: TreeNode = {name: 'leaf.txt', type: 'file', size: 1}
         for (let i = 0; i < 50_000; i++) tree = {name: 'd', type: 'folder', children: [tree]}
@@ -148,5 +192,6 @@ describe('buildIndex', () => {
         expect(index.nodes).toHaveLength(50_001)
         expect(leaf.depth).toBe(50_000)
         expect(leaf.path).toBe(`${'d/'.repeat(49_999)}leaf.txt`)
+        expect(index.root.subtreeSize).toBe(1)
     })
 })
