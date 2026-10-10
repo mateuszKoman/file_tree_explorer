@@ -51,7 +51,7 @@ function SearchResults({nodes, query, selectedPath}: SearchResultsProps) {
                 {found.results.map((info) => (
                     <li key={info.displayPath} className={styles.item}>
                         <Link
-                            className={styles.link}
+                            className={info.path === selectedPath ? `${styles.link} ${styles.selected}` : styles.link}
                             to={href(info.path)}
                             aria-current={info.path === selectedPath ? 'page' : undefined}
                         >

@@ -12,3 +12,10 @@ body {
 a {
     color: #6cb6ff;
 }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid #6cb6ff;
+}
