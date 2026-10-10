@@ -1,0 +1,28 @@
+.name {
+    margin-top: 0;
+    overflow-wrap: anywhere;
+}
+
+.facts {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 8px 16px;
+    margin: 0;
+}
+
+.facts dt {
+    color: #999;
+}
+
+.facts dd {
+    margin: 0;
+}
+
+.path {
+    font-family: monospace;
+    overflow-wrap: anywhere;
+}
+
+.notFound h2 {
+    margin-top: 0;
+}

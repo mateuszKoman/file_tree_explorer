@@ -20,6 +20,7 @@ export type NodeInfo = {
     depth: number
     childCount: number
     childPaths: string[]
+    subtreeSize: number
 }
 
 export type TreeIndex = {

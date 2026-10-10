@@ -1,5 +1,6 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import HomePage from './pages/HomePage.tsx'
+import NodeDetails from './pages/NodeDetails.tsx'
 import NotFound from './pages/NotFound.tsx'
 import TreeLayout from './pages/TreeLayout.tsx'
 import TreeProvider from "./state/TreeProvider.tsx";
@@ -11,8 +12,9 @@ function App() {
                 <Routes>
                     <Route path="/" element={<HomePage/>}/>
                     <Route path="/tree" element={<TreeLayout/>}>
-                        <Route index element={<p>Node details go here.</p>}/>
-                        <Route path="*" element={<p>Node details go here.</p>}/>
+                        <Route index element={<NodeDetails/>}/>
+                        <Route path=":nodePath" element={<NodeDetails/>}/>
+                        <Route path="*" element={<NodeDetails/>}/>
                     </Route>
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>

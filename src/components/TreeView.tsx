@@ -6,6 +6,7 @@ import styles from './TreeView.module.css'
 type TreeViewProps = {
     index: TreeIndex
     expanded: Set<string>
+    selectedPath: string | null
     onToggle: (path: string) => void
 }
 
@@ -23,7 +24,7 @@ function collectVisibleRows(index: TreeIndex, expanded: Set<string>): NodeInfo[]
     return rows
 }
 
-function TreeView({index, expanded, onToggle}: TreeViewProps) {
+function TreeView({index, expanded, selectedPath, onToggle}: TreeViewProps) {
     const rows = useMemo(() => collectVisibleRows(index, expanded), [index, expanded])
 
     return (
@@ -33,6 +34,7 @@ function TreeView({index, expanded, onToggle}: TreeViewProps) {
                     key={info.path}
                     info={info}
                     expanded={expanded.has(info.path)}
+                    selected={info.path === selectedPath}
                     onToggle={onToggle}
                 />
             ))}
