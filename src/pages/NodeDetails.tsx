@@ -17,7 +17,7 @@ function NodeDetails() {
             <div className={styles.notFound}>
                 <h2>Node not found</h2>
                 <p>No node in the loaded tree matches this address.</p>
-                <Link to={href('')}>Go to the root folder</Link>
+                <Link className={styles.rootLink} to={href('')}>Go to the root folder</Link>
             </div>
         )
     }

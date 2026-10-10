@@ -20,8 +20,18 @@
 
 .link {
     display: block;
+    padding: 2px 4px;
     overflow-wrap: anywhere;
     border-radius: 4px;
+}
+
+.link:hover {
+    background: #2a2a2a;
+}
+
+.selected,
+.selected:hover {
+    background: #094771;
 }
 
 .link:focus-visible {

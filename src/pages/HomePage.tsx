@@ -74,7 +74,7 @@ function HomePage() {
                     </button>
                     <label className={styles.file}>
                         Upload file
-                        <input type="file" accept=".json" onChange={handleFileChange}/>
+                        <input className={styles.fileInput} type="file" accept=".json" onChange={handleFileChange}/>
                     </label>
                     <button
                         type="button"

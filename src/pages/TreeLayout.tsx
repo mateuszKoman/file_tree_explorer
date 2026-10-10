@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react'
+import {useCallback, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent} from 'react'
 import {Link, Navigate, Outlet, useSearchParams} from 'react-router-dom'
 import SearchBox from '../components/SearchBox.tsx'
 import SearchResults from '../components/SearchResults.tsx'
@@ -13,6 +13,16 @@ function withAncestors(expanded: Set<string>, path: string): Set<string> {
     const missing = ancestorPaths(path).filter((ancestor) => !expanded.has(ancestor))
     if (missing.length === 0) return expanded
     return new Set([...expanded, ...missing])
+}
+
+const DEFAULT_TREE_WIDTH = 300
+const MIN_TREE_WIDTH = 160
+const RESIZER_WIDTH = 6
+const DETAILS_MIN_WIDTH = 240
+
+function clampTreeWidth(width: number): number {
+    const max = Math.max(MIN_TREE_WIDTH, window.innerWidth - RESIZER_WIDTH - DETAILS_MIN_WIDTH)
+    return Math.min(Math.max(width, MIN_TREE_WIDTH), max)
 }
 
 function folderPaths(nodes: NodeInfo[]): Set<string> {
@@ -30,6 +40,7 @@ function TreeLayout() {
     const query = (searchParams.get('q') ?? '').trim()
     const [expanded, setExpanded] = useState<Set<string>>(() => new Set(['']))
     const [revealedPath, setRevealedPath] = useState<string | null>(null)
+    const [treeWidth, setTreeWidth] = useState(DEFAULT_TREE_WIDTH)
 
     if (index !== null && selectedPath !== revealedPath) {
         setRevealedPath(selectedPath)
@@ -56,12 +67,51 @@ function TreeLayout() {
         setExpanded(new Set(['']))
     }, [])
 
+    const startResize = useCallback((event: ReactPointerEvent<HTMLButtonElement>) => {
+        event.preventDefault()
+        const handle = event.currentTarget
+        const startX = event.clientX
+        const startWidth = treeWidth
+        const previousCursor = document.body.style.cursor
+        document.body.style.cursor = 'col-resize'
+        try {
+            handle.setPointerCapture(event.pointerId)
+        } catch {
+            // Pointer capture needs a real press.
+        }
+
+        function onMove(moveEvent: PointerEvent) {
+            setTreeWidth(clampTreeWidth(startWidth + moveEvent.clientX - startX))
+        }
+
+        function onUp(upEvent: PointerEvent) {
+            handle.removeEventListener('pointermove', onMove)
+            handle.removeEventListener('pointerup', onUp)
+            document.body.style.cursor = previousCursor
+            if (handle.hasPointerCapture(upEvent.pointerId)) handle.releasePointerCapture(upEvent.pointerId)
+        }
+
+        handle.addEventListener('pointermove', onMove)
+        handle.addEventListener('pointerup', onUp)
+    }, [treeWidth])
+
+    const resizeFromKeyboard = useCallback((event: KeyboardEvent<HTMLButtonElement>) => {
+        const step = event.shiftKey ? 48 : 16
+        if (event.key === 'ArrowLeft') {
+            event.preventDefault()
+            setTreeWidth((width) => clampTreeWidth(width - step))
+        } else if (event.key === 'ArrowRight') {
+            event.preventDefault()
+            setTreeWidth((width) => clampTreeWidth(width + step))
+        }
+    }, [])
+
     if (index === null) return <Navigate to="/" replace/>
 
     return (
-        <div className={styles.layout}>
+        <div className={styles.layout} style={{gridTemplateColumns: `${treeWidth}px ${RESIZER_WIDTH}px 1fr`}}>
             <header className={styles.header}>
-                <Link to="/">Load another</Link>
+                <Link className={styles.link} to="/">Load another</Link>
                 <SearchBox/>
                 <button type="button" className={styles.button} onClick={expandAll}>Expand all</button>
                 <button type="button" className={styles.button} onClick={collapseAll}>Collapse all</button>
@@ -76,6 +126,16 @@ function TreeLayout() {
                     <SearchResults nodes={index.nodes} query={query} selectedPath={selectedPath}/>
                 )}
             </nav>
+            <button
+                type="button"
+                className={styles.resizer}
+                aria-orientation="vertical"
+                aria-label="Resize tree panel"
+                aria-valuemin={MIN_TREE_WIDTH}
+                aria-valuenow={treeWidth}
+                onPointerDown={startResize}
+                onKeyDown={resizeFromKeyboard}
+            />
             <section className={styles.details}>
                 <Outlet/>
             </section>
