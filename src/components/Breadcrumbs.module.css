@@ -19,17 +19,19 @@
 .separator {
     margin-left: 8px;
     margin-right: 8px;
-    color: #999;
+    color: var(--text-faint);
 }
 
 .current {
     overflow-wrap: anywhere;
+    font-weight: 600;
 }
 
 .link {
     border-radius: 4px;
+    text-decoration: none;
 }
 
-.link:focus-visible {
-    outline: 2px solid #6cb6ff;
+.link:hover {
+    text-decoration: underline;
 }

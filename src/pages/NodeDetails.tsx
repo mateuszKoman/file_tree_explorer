@@ -1,5 +1,6 @@
 import {Link} from 'react-router-dom'
 import Breadcrumbs from '../components/Breadcrumbs.tsx'
+import NodeIcon from '../components/NodeIcon.tsx'
 import {formatSize} from '../domain/formatSize.ts'
 import {useNodeHref} from '../state/useNodeHref.ts'
 import {useSelectedPath} from '../state/useSelectedPath.ts'
@@ -28,7 +29,8 @@ function NodeDetails() {
         <article>
             <Breadcrumbs info={info} byPath={index.byPath}/>
             <h2 className={styles.name}>
-                <span aria-hidden="true">{node.type === 'folder' ? '📁' : '📄'}</span> {node.name}
+                <NodeIcon type={node.type === 'folder' ? 'folder' : 'file'}/>
+                <span className={styles.nameText}>{node.name}</span>
             </h2>
             <dl className={styles.facts}>
                 <dt>Type</dt>
@@ -63,9 +65,8 @@ function NodeDetails() {
                                 return (
                                     <li key={childPath} className={styles.child}>
                                         <Link className={styles.childLink} to={href(childPath)}>
-                                            <span aria-hidden="true">{isFolder ? '📁' : '📄'}</span>
-                                            {' '}
-                                            {child.node.name}
+                                            <NodeIcon type={isFolder ? 'folder' : 'file'}/>
+                                            <span className={styles.childName}>{child.node.name}</span>
                                         </Link>
                                         {child.node.type === 'file' && (
                                             <span className={styles.childSize} title={`${child.node.size} bytes`}>

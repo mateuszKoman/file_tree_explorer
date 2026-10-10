@@ -2,6 +2,7 @@ import {memo} from 'react'
 import {Link} from 'react-router-dom'
 import type {NodeInfo} from '../domain/types.ts'
 import {useNodeHref} from '../state/useNodeHref.ts'
+import NodeIcon from './NodeIcon.tsx'
 import styles from './TreeNodeRow.module.css'
 
 type TreeNodeRowProps = {
@@ -36,14 +37,19 @@ function TreeNodeRow({info, expanded, selected, onToggle}: TreeNodeRowProps) {
                     aria-label={info.node.name}
                     onClick={() => onToggle(info.path)}
                 >
-                    <span aria-hidden="true">{expanded ? '▾' : '▸'}</span>
+                    <svg className={styles.chevron} viewBox="0 0 16 16" aria-hidden="true">
+                        <path
+                            fill="currentColor"
+                            d={expanded
+                                ? 'M3.2 5.4 8 10.2l4.8-4.8 1 1L8 12.2 2.2 6.4z'
+                                : 'M6 3.2 11 8 6 12.8 5 11.8 9 8 5 4.2z'}
+                        />
+                    </svg>
                 </button>
             ) : (
                 <span className={styles.spacer}/>
             )}
-            <span className={styles.icon} aria-hidden="true">
-        {isFolder ? '📁' : '📄'}
-      </span>
+            <NodeIcon type={isFolder ? 'folder' : 'file'}/>
             <Link
                 to={href(info.path)}
                 className={styles.name}
