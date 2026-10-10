@@ -28,6 +28,9 @@
 
 .error {
     margin: 0;
+    max-height: 160px;
+    overflow-y: auto;
+    overflow-wrap: anywhere;
     color: #f47067;
 }
 
