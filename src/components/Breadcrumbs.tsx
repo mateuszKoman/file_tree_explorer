@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom'
-import {ancestorPaths, nodeUrl} from '../domain/paths.ts'
+import {ancestorPaths} from '../domain/paths.ts'
 import type {NodeInfo} from '../domain/types.ts'
+import {useNodeHref} from '../state/useNodeHref.ts'
 import styles from './Breadcrumbs.module.css'
 
 type BreadcrumbsProps = {
@@ -9,6 +10,7 @@ type BreadcrumbsProps = {
 }
 
 function Breadcrumbs({info, byPath}: BreadcrumbsProps) {
+    const href = useNodeHref()
     const paths = [...ancestorPaths(info.path), info.path]
 
     return (
@@ -24,7 +26,7 @@ function Breadcrumbs({info, byPath}: BreadcrumbsProps) {
                             {current ? (
                                 <span className={styles.current} aria-current="page">{crumb.node.name}</span>
                             ) : (
-                                <Link className={styles.link} to={nodeUrl(path)}>{crumb.node.name}</Link>
+                                <Link className={styles.link} to={href(path)}>{crumb.node.name}</Link>
                             )}
                         </li>
                     )

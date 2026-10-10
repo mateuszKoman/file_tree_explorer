@@ -1,7 +1,7 @@
 import {memo} from 'react'
 import {Link} from 'react-router-dom'
-import {nodeUrl} from '../domain/paths.ts'
 import type {NodeInfo} from '../domain/types.ts'
+import {useNodeHref} from '../state/useNodeHref.ts'
 import styles from './TreeNodeRow.module.css'
 
 type TreeNodeRowProps = {
@@ -14,6 +14,7 @@ type TreeNodeRowProps = {
 const INDENT_PX = 16
 
 function TreeNodeRow({info, expanded, selected, onToggle}: TreeNodeRowProps) {
+    const href = useNodeHref()
     const isFolder = info.node.type === 'folder'
     const canExpand = isFolder && info.childCount > 0
 
@@ -44,7 +45,7 @@ function TreeNodeRow({info, expanded, selected, onToggle}: TreeNodeRowProps) {
         {isFolder ? '📁' : '📄'}
       </span>
             <Link
-                to={nodeUrl(info.path)}
+                to={href(info.path)}
                 className={styles.name}
                 aria-current={selected ? 'page' : undefined}
             >

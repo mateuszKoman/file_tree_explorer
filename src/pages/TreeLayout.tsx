@@ -1,5 +1,7 @@
 import {useCallback, useState} from 'react'
-import {Link, Navigate, Outlet} from 'react-router-dom'
+import {Link, Navigate, Outlet, useSearchParams} from 'react-router-dom'
+import SearchBox from '../components/SearchBox.tsx'
+import SearchResults from '../components/SearchResults.tsx'
 import TreeView from '../components/TreeView.tsx'
 import {ancestorPaths} from '../domain/paths.ts'
 import type {NodeInfo} from '../domain/types.ts'
@@ -24,6 +26,8 @@ function folderPaths(nodes: NodeInfo[]): Set<string> {
 function TreeLayout() {
     const {index, storageWarning} = useTreeContext()
     const selectedPath = useSelectedPath()
+    const [searchParams] = useSearchParams()
+    const query = (searchParams.get('q') ?? '').trim()
     const [expanded, setExpanded] = useState<Set<string>>(() => new Set(['']))
     const [revealedPath, setRevealedPath] = useState<string | null>(null)
 
@@ -58,14 +62,19 @@ function TreeLayout() {
         <div className={styles.layout}>
             <header className={styles.header}>
                 <Link to="/">Load another</Link>
+                <SearchBox/>
                 <button type="button" className={styles.button} onClick={expandAll}>Expand all</button>
                 <button type="button" className={styles.button} onClick={collapseAll}>Collapse all</button>
                 {storageWarning && (
                     <p className={styles.warning} role="status">This tree will not survive a refresh.</p>
                 )}
             </header>
-            <nav className={styles.tree} aria-label="Tree panel">
-                <TreeView index={index} expanded={expanded} selectedPath={selectedPath} onToggle={toggle}/>
+            <nav className={styles.tree} aria-label={query === '' ? 'Tree panel' : 'Search results'}>
+                {query === '' ? (
+                    <TreeView index={index} expanded={expanded} selectedPath={selectedPath} onToggle={toggle}/>
+                ) : (
+                    <SearchResults nodes={index.nodes} query={query} selectedPath={selectedPath}/>
+                )}
             </nav>
             <section className={styles.details}>
                 <Outlet/>
