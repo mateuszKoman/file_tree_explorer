@@ -1,14 +1,14 @@
 :root {
-  color-scheme: dark;
+    color-scheme: dark;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #1e1e1e;
-  color: #ddd;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #1e1e1e;
+    color: #ddd;
 }
 
 a {
-  color: #6cb6ff;
+    color: #6cb6ff;
 }
