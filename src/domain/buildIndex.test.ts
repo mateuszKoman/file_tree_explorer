@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest'
 import {buildIndex} from './buildIndex.ts'
-import type {FolderNode} from './types.ts'
+import type {FolderNode, TreeNode} from './types.ts'
 
 describe('buildIndex', () => {
     it('indexes a root-only tree under the empty path', () => {
@@ -136,5 +136,17 @@ describe('buildIndex', () => {
             'file10.txt',
             'README.md',
         ])
+    })
+
+    it('indexes a 50k-level deep tree without overflowing the stack', () => {
+        let tree: TreeNode = {name: 'leaf.txt', type: 'file', size: 1}
+        for (let i = 0; i < 50_000; i++) tree = {name: 'd', type: 'folder', children: [tree]}
+
+        const index = buildIndex(tree)
+
+        const leaf = index.nodes[index.nodes.length - 1]
+        expect(index.nodes).toHaveLength(50_001)
+        expect(leaf.depth).toBe(50_000)
+        expect(leaf.path).toBe(`${'d/'.repeat(49_999)}leaf.txt`)
     })
 })
