@@ -1,5 +1,7 @@
 import {Link} from 'react-router-dom'
+import Breadcrumbs from '../components/Breadcrumbs.tsx'
 import {formatSize} from '../domain/formatSize.ts'
+import {nodeUrl} from '../domain/paths.ts'
 import {useSelectedPath} from '../state/useSelectedPath.ts'
 import {useTreeContext} from '../state/useTreeContext.ts'
 import styles from './NodeDetails.module.css'
@@ -9,7 +11,7 @@ function NodeDetails() {
     const path = useSelectedPath()
     const info = path === null ? undefined : index?.byPath.get(path)
 
-    if (info === undefined) {
+    if (index === null || info === undefined) {
         return (
             <div className={styles.notFound}>
                 <h2>Node not found</h2>
@@ -23,6 +25,7 @@ function NodeDetails() {
 
     return (
         <article>
+            <Breadcrumbs info={info} byPath={index.byPath}/>
             <h2 className={styles.name}>
                 <span aria-hidden="true">{node.type === 'folder' ? '📁' : '📄'}</span> {node.name}
             </h2>
@@ -45,6 +48,36 @@ function NodeDetails() {
                 <dt>Path</dt>
                 <dd className={styles.path}>{info.displayPath}</dd>
             </dl>
+            {node.type === 'folder' && (
+                <section className={styles.contents}>
+                    <h3 className={styles.contentsHeading}>Contents</h3>
+                    {info.childPaths.length === 0 ? (
+                        <p className={styles.empty}>This folder is empty.</p>
+                    ) : (
+                        <ul className={styles.children}>
+                            {info.childPaths.map((childPath) => {
+                                const child = index.byPath.get(childPath)
+                                if (child === undefined) return null
+                                const isFolder = child.node.type === 'folder'
+                                return (
+                                    <li key={childPath} className={styles.child}>
+                                        <Link className={styles.childLink} to={nodeUrl(childPath)}>
+                                            <span aria-hidden="true">{isFolder ? '📁' : '📄'}</span>
+                                            {' '}
+                                            {child.node.name}
+                                        </Link>
+                                        {child.node.type === 'file' && (
+                                            <span className={styles.childSize} title={`${child.node.size} bytes`}>
+                                                {formatSize(child.node.size)}
+                                            </span>
+                                        )}
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    )}
+                </section>
+            )}
         </article>
     )
 }
