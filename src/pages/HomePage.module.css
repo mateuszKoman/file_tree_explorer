@@ -1,5 +1,58 @@
 .page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 32px 16px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px 16px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    font-family: monospace;
+    font-size: 13px;
+    background: #2a2a2a;
+    color: #ddd;
+    border: 1px solid #444;
+    border-radius: 4px;
+}
+
+.textarea[aria-invalid='true'] {
+    border-color: #f47067;
+}
+
+.error {
+    margin: 0;
+    color: #f47067;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.button {
+    padding: 6px 12px;
+    background: #333;
+    color: #ddd;
+    border: 1px solid #444;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: #3a3a3a;
+}
+
+.file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
