@@ -1,21 +1,118 @@
 :root {
+    color-scheme: light;
+    --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+    --bg: #f3f5f8;
+    --surface: #ffffff;
+    --surface-muted: #eef1f5;
+    --header: #ffffff;
+    --text: #18202b;
+    --text-muted: #5c6775;
+    --text-faint: #8a94a3;
+    --border: #e1e6ee;
+    --border-strong: #cfd6e0;
+
+    --accent: #1d4ed8;
+    --accent-hover: #1e40af;
+    --accent-contrast: #ffffff;
+    --accent-soft: #e7f0fd;
+    --link: #1d4ed8;
+    --focus: #1d4ed8;
+
+    --selected: #d6e6fb;
+    --selected-text: #0f2f66;
+    --hover: #f0f3f7;
+
+    --danger: #c62828;
+    --warning: #8a5b00;
+    --warning-bg: #fff7e0;
+    --warning-border: #edd48a;
+
+    --mark-bg: #ffe08a;
+    --mark-text: #18202b;
+    --folder: #c2410c;
+    --file: #5b6b7c;
+
+    --shadow: 0 1px 2px rgb(24 32 43 / 5%), 0 12px 32px rgb(24 32 43 / 6%);
+    --radius: 12px;
+    --radius-sm: 8px;
+}
+
+:root[data-theme='dark'] {
     color-scheme: dark;
+
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface-muted: #1c232c;
+    --header: #12171e;
+    --text: #e8eef5;
+    --text-muted: #9aa7b5;
+    --text-faint: #738291;
+    --border: #2c3541;
+    --border-strong: #3d4856;
+
+    --accent: #3b82f6;
+    --accent-hover: #60a5fa;
+    --accent-contrast: #ffffff;
+    --accent-soft: #18283d;
+    --link: #93c5fd;
+    --focus: #93c5fd;
+
+    --selected: #1c3d66;
+    --selected-text: #eaf3ff;
+    --hover: #222a35;
+
+    --danger: #ff8d86;
+    --warning: #f5c451;
+    --warning-bg: #2c2614;
+    --warning-border: #6d5a28;
+
+    --mark-bg: #7a5b12;
+    --mark-text: #fff6d8;
+    --folder: #f0b429;
+    --file: #9aa7b5;
+
+    --shadow: 0 1px 2px rgb(0 0 0 / 35%), 0 12px 32px rgb(0 0 0 / 28%);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    height: 100%;
 }
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #1e1e1e;
-    color: #ddd;
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.5;
+    background: var(--bg);
+    color: var(--text);
+}
+
+button,
+input,
+textarea {
+    font: inherit;
 }
 
 a {
-    color: #6cb6ff;
+    color: var(--link);
 }
 
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
-    outline: 2px solid #6cb6ff;
+:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+::selection {
+    background: var(--selected);
+    color: var(--selected-text);
 }

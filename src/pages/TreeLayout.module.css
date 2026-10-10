@@ -1,7 +1,9 @@
 .layout {
     display: grid;
-    grid-template-rows: auto 1fr;
-    min-height: 100vh;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 100vh;
+    height: 100dvh;
+    background: var(--bg);
 }
 
 .header {
@@ -9,65 +11,92 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    border-bottom: 1px solid #444;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--header);
+    border-bottom: 1px solid var(--border);
 }
 
 .link {
-    border-radius: 4px;
+    padding: 8px 12px;
+    color: var(--text);
+    text-decoration: none;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
 }
 
-.link:focus-visible {
-    outline: 2px solid #6cb6ff;
+.link:hover {
+    background: var(--hover);
 }
 
 .button {
-    padding: 6px 12px;
-    background: #333;
-    color: #ddd;
-    border: 1px solid #444;
-    border-radius: 4px;
-    font: inherit;
+    padding: 8px 12px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
     cursor: pointer;
 }
 
 .button:hover {
-    background: #3a3a3a;
+    background: var(--hover);
 }
 
-.button:focus-visible {
-    outline: 2px solid #6cb6ff;
+.switcher {
+    margin-left: auto;
 }
 
 .warning {
     flex-basis: 100%;
     margin: 0;
-    color: #e6c200;
+    padding: 8px 10px;
+    color: var(--warning);
+    background: var(--warning-bg);
+    border: 1px solid var(--warning-border);
+    border-radius: var(--radius-sm);
 }
 
 .tree {
-    padding: 16px;
+    min-height: 0;
+    padding: 8px;
     overflow: auto;
+    background: var(--surface);
 }
 
 .resizer {
-    width: 6px;
-    height: 100%;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    align-self: stretch;
     padding: 0;
     border: none;
     cursor: col-resize;
-    background: #444;
+    background: var(--border);
     touch-action: none;
 }
 
 .resizer:hover,
 .resizer:focus-visible {
-    background: #6cb6ff;
+    background: var(--accent);
     outline: none;
 }
 
 .details {
-    padding: 16px;
+    min-height: 0;
+    padding: 20px 24px;
     overflow: auto;
+    background: var(--bg);
+}
+
+@media (max-width: 720px) {
+    .switcher {
+        margin-left: 0;
+    }
+
+    .details {
+        padding: 16px;
+    }
 }

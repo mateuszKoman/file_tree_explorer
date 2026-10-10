@@ -2,6 +2,7 @@ import {useCallback, useState, type KeyboardEvent, type PointerEvent as ReactPoi
 import {Link, Navigate, Outlet, useSearchParams} from 'react-router-dom'
 import SearchBox from '../components/SearchBox.tsx'
 import SearchResults from '../components/SearchResults.tsx'
+import ThemeToggle from '../components/ThemeToggle.tsx'
 import TreeView from '../components/TreeView.tsx'
 import {ancestorPaths} from '../domain/paths.ts'
 import type {NodeInfo} from '../domain/types.ts'
@@ -115,6 +116,9 @@ function TreeLayout() {
                 <SearchBox/>
                 <button type="button" className={styles.button} onClick={expandAll}>Expand all</button>
                 <button type="button" className={styles.button} onClick={collapseAll}>Collapse all</button>
+                <div className={styles.switcher}>
+                    <ThemeToggle/>
+                </div>
                 {storageWarning && (
                     <p className={styles.warning} role="status">This tree will not survive a refresh.</p>
                 )}

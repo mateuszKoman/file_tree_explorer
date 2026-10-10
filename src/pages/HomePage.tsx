@@ -1,5 +1,6 @@
 import {type ChangeEvent, type FormEvent, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
+import ThemeToggle from '../components/ThemeToggle.tsx'
 import {sampleTree} from '../sample.ts'
 import styles from './HomePage.module.css'
 import {useTreeContext} from "../state/useTreeContext.ts";
@@ -35,12 +36,17 @@ function HomePage() {
 
     return (
         <main className={styles.page}>
-            <h1>File Tree Explorer</h1>
-            <p>Paste or upload a JSON tree to explore it.</p>
+            <header className={styles.header}>
+                <div>
+                    <h1 className={styles.title}>File Tree Explorer</h1>
+                    <p className={styles.lead}>Paste or upload a JSON tree to explore it.</p>
+                </div>
+                <ThemeToggle/>
+            </header>
             {index !== null && (
                 <div className={styles.banner}>
                     <p className={styles.bannerText}>A tree is loaded ({index.nodes.length} nodes)</p>
-                    <button type="button" className={styles.button} onClick={() => navigate('/tree')}>
+                    <button type="button" className={`${styles.button} ${styles.primary}`} onClick={() => navigate('/tree')}>
                         Open it
                     </button>
                     <button type="button" className={styles.button} onClick={clearTree}>
@@ -52,7 +58,7 @@ function HomePage() {
                 </div>
             )}
             <form className={styles.form} onSubmit={handleSubmit}>
-                <label htmlFor="tree-json">Tree JSON</label>
+                <label className={styles.label} htmlFor="tree-json">Tree JSON</label>
                 <textarea
                     id="tree-json"
                     className={styles.textarea}
@@ -69,7 +75,7 @@ function HomePage() {
                     </p>
                 )}
                 <div className={styles.actions}>
-                    <button type="submit" className={styles.button}>
+                    <button type="submit" className={`${styles.button} ${styles.primary}`}>
                         Load JSON
                     </button>
                     <label className={styles.file}>

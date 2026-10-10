@@ -1,0 +1,45 @@
+.switcher {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 2px;
+    padding: 3px;
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+}
+
+.option {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.option svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.option:hover {
+    color: var(--text);
+}
+
+.option[aria-pressed='true'] {
+    background: var(--accent);
+    color: var(--accent-contrast);
+}
+
+.option[aria-pressed='true']:hover {
+    background: var(--accent-hover);
+    color: var(--accent-contrast);
+}
