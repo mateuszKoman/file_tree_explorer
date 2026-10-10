@@ -5,7 +5,7 @@ import styles from './HomePage.module.css'
 import {useTreeContext} from "../state/useTreeContext.ts";
 
 function HomePage() {
-    const {loadTree} = useTreeContext()
+    const {index, storageWarning, loadTree, clearTree} = useTreeContext()
     const navigate = useNavigate()
     const [text, setText] = useState('')
     const [error, setError] = useState<string | null>(null)
@@ -37,6 +37,20 @@ function HomePage() {
         <main className={styles.page}>
             <h1>File Tree Explorer</h1>
             <p>Paste or upload a JSON tree to explore it.</p>
+            {index !== null && (
+                <div className={styles.banner}>
+                    <p className={styles.bannerText}>A tree is loaded ({index.nodes.length} nodes)</p>
+                    <button type="button" className={styles.button} onClick={() => navigate('/tree')}>
+                        Open it
+                    </button>
+                    <button type="button" className={styles.button} onClick={clearTree}>
+                        Clear
+                    </button>
+                    {storageWarning && (
+                        <p className={styles.warning} role="status">This tree will not survive a refresh.</p>
+                    )}
+                </div>
+            )}
             <form className={styles.form} onSubmit={handleSubmit}>
                 <label htmlFor="tree-json">Tree JSON</label>
                 <textarea

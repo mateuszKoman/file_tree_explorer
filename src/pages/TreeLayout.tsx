@@ -22,7 +22,7 @@ function folderPaths(nodes: NodeInfo[]): Set<string> {
 }
 
 function TreeLayout() {
-    const {index} = useTreeContext()
+    const {index, storageWarning} = useTreeContext()
     const selectedPath = useSelectedPath()
     const [expanded, setExpanded] = useState<Set<string>>(() => new Set(['']))
     const [revealedPath, setRevealedPath] = useState<string | null>(null)
@@ -60,6 +60,9 @@ function TreeLayout() {
                 <Link to="/">Load another</Link>
                 <button type="button" className={styles.button} onClick={expandAll}>Expand all</button>
                 <button type="button" className={styles.button} onClick={collapseAll}>Collapse all</button>
+                {storageWarning && (
+                    <p className={styles.warning} role="status">This tree will not survive a refresh.</p>
+                )}
             </header>
             <nav className={styles.tree} aria-label="Tree panel">
                 <TreeView index={index} expanded={expanded} selectedPath={selectedPath} onToggle={toggle}/>

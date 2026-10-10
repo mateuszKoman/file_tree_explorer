@@ -32,6 +32,12 @@
     outline: 2px solid #6cb6ff;
 }
 
+.warning {
+    flex-basis: 100%;
+    margin: 0;
+    color: #e6c200;
+}
+
 .tree {
     padding: 16px;
     border-right: 1px solid #444;
